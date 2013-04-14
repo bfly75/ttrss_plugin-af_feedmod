@@ -113,7 +113,6 @@ class Af_Feedmod extends Plugin implements IHandler
                             for ( $i = 0; $i <= $entries->length-1; $i++ ) {
                                 $article_content .= $doc->saveXML($entries->item($i));
                             }
-                            $article_content .= "<br/>Length: " . $entries->length; 
                         }
 
                         if ( strlen($article_content) > 0 ) {
