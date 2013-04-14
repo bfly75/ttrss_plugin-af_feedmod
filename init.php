@@ -105,14 +105,19 @@ class Af_Feedmod extends Plugin implements IHandler
                     @$doc->loadHTML($html);
 
                     if ($doc) {
-                        $basenode = false;
+                        $article_content = "";
                         $xpath = new DOMXPath($doc);
-                        $entries = $xpath->query('(//'.$config['xpath'].')');   // find main DIV according to config
+                        $entries = $xpath->query('(//'.$config['xpath'].')');   // find all DIV's according to config
 
-                        if ($entries->length > 0) $basenode = $entries->item(0);
+                        if ( $entries->length > 0 ) {
+                            for ( $i = 0; $i <= $entries->length-1; $i++ ) {
+                                $article_content .= $doc->saveXML($entries->item($i));
+                            }
+                            $article_content .= "<br/>Length: " . $entries->length; 
+                        }
 
-                        if ($basenode) {
-                            $article['content'] = $doc->saveXML($basenode);
+                        if ( strlen($article_content) > 0 ) {
+                            $article['content'] = $article_content;
                             $article['plugin_data'] = "feedmod,$owner_uid:" . $article['plugin_data'];
                         }
                     }
